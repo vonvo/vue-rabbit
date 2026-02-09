@@ -1,0 +1,9 @@
+//自动导入
+//项目里一些组件共享的色值会以scss变量的方式统一放到一个名为var.scss的文件里   (存入色值变量)
+//通过vite.config.js配置自动导入文件
+
+$xtxColor: #27ba9b;
+$helpColor: #e26237;
+$sucColor: #1dc779;
+$warnColor: #ffb302;
+$priceColor: #cf4444;

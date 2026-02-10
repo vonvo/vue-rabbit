@@ -1,4 +1,5 @@
 <script setup>
+//  一级路由，首页  路径/ 
 import LayoutNav from '@/views/Layout/components/LayoutNav.vue'
 import LayoutHeader from '@/views/Layout/components/LayoutHeader.vue'
 import LayoutFooter from '@/views/Layout/components/LayoutFooter.vue'

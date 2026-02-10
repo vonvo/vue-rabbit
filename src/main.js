@@ -16,14 +16,17 @@ import { useIntersectionObserver } from '@vueuse/core'
 //     console.log(res);
 // })
 
-
+//引入懒加载指令插件并且注册
+import { lazyPlugin } from './directives'
 
 const app = createApp(App)
-
+app.use(lazyPlugin)
 app.use(createPinia())
 app.use(router)
 
 app.mount('#app')
+
+//懒加载指令的逻辑不能直接写到入口文件，入口文件通常只做一些初始化的事情，不应该包含太多的逻辑代码，可以通过插件的方式把懒加载指令封装为插件，main.js入口文件只需要负责注册插件即可
 
 //图片通过懒加载优化手段可以做到，只有进入视口区域才发送图片请求
 //指令用法：在图片img身上绑定指令，该图片只有在正式进入到视口区域时才会发送图片网络请求
@@ -36,28 +39,28 @@ app.mount('#app')
 //5.测试图片资源是否发出
 
 //定义全局指令
-app.directive("img-lazy",{
-    mounted(el,binding){
-        //el,指令绑定的元素，img
-        //binding，是指令对象，binding.value 是 指令等于号，后面绑定的表达式的值 ，图片url
+// app.directive("img-lazy",{
+//     mounted(el,binding){
+//         //el,指令绑定的元素，img
+//         //binding，是指令对象，binding.value 是 指令等于号，后面绑定的表达式的值 ，图片url
 
-        console.log(el,binding.value)
-        useIntersectionObserver(
-            el,
-            ([{isIntersecting}])=>{
-                // console.log(isIntersecting);
-                if(isIntersecting){
-                    //进入视口区域
-                    el.src=binding.value
+//         console.log(el,binding.value)
+//         useIntersectionObserver(
+//             el,
+//             ([{isIntersecting}])=>{
+//                 // console.log(isIntersecting);
+//                 if(isIntersecting){
+//                     //进入视口区域
+//                     el.src=binding.value
 
-                }
+//                 }
                 
-            }
+//             }
 
-        )
+//         )
 
         
-    }
-})
+//     }
+// })
 
 

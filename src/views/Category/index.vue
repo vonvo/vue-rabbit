@@ -1,5 +1,5 @@
 <script setup>
-import {getTopCategoryAPI} from "@/apis/Category"
+import {getTopCategoryAPI} from "@/apis/category"
 import { onMounted,ref } from "vue";
 import { onBeforeRouteUpdate, useRoute } from "vue-router";
 
@@ -7,63 +7,70 @@ import GoodItem from "../Home/components/GoodItem.vue";
 
 import {getBannerAPI} from  "@/apis/home"
 
-const categoryData = ref({})
-const route = useRoute()
+import { useBanner } from "./composables/useBanner";
+import { useCategory } from "./composables/useCategory";
 
 
-// const getCategory = async (id) => {
+//通过解构赋值拿到bannerList
+
+const {bannerList}=useBanner()
+const {categoryData}=useCategory()
+
+// const categoryData = ref({})
+// const route = useRoute()
+
+
+// // const getCategory = async (id) => {
+// // // 如何在setup中获取路由参数 useRoute() -> route 等价于this.$route
+// //     const res = await getTopCategoryAPI(id)
+// //     categoryData.value = res.result
+// // }
+
+// // const getCategory = async () => {
+// // // 如何在setup中获取路由参数 useRoute() -> route 等价于this.$route
+// //     const res = await getTopCategoryAPI(route.params.id)
+// //     console.log(res);
+    
+// //     categoryData.value = res.result
+// // }
+
+// //把上面的函数加个传参
+// const getCategory = async (id=route.params.id) => {
 // // 如何在setup中获取路由参数 useRoute() -> route 等价于this.$route
 //     const res = await getTopCategoryAPI(id)
-//     categoryData.value = res.result
-// }
-
-// const getCategory = async () => {
-// // 如何在setup中获取路由参数 useRoute() -> route 等价于this.$route
-//     const res = await getTopCategoryAPI(route.params.id)
 //     console.log(res);
     
 //     categoryData.value = res.result
 // }
 
-//把上面的函数加个传参
-const getCategory = async (id=route.params.id) => {
-// 如何在setup中获取路由参数 useRoute() -> route 等价于this.$route
-    const res = await getTopCategoryAPI(id)
-    console.log(res);
-    
-    categoryData.value = res.result
-}
 
 
+// //目标：路由参数变化的时候，可以把分类数据接口重新发送
 
-//目标：路由参数变化的时候，可以把分类数据接口重新发送
-
-onBeforeRouteUpdate((to)=>{
-//存在问题：使用最新的路由参数，请求最新的分类数据
-    console.log(to);
-    getCategory(to.params.id)
-})
-
+// onBeforeRouteUpdate((to)=>{
+// //存在问题：使用最新的路由参数，请求最新的分类数据
+//     console.log(to);
+//     getCategory(to.params.id)
+// })
 
 
+// onMounted(()=>{
+//     getCategory()
+// })
 
+//获取banner
+// const bannerList=ref([]) 
 
-onMounted(()=>{
-    getCategory()
-})
+// const getBanner=async ()=>{
+//     const res=await getBannerAPI({
+//         distributionSite : '2' })
+//         console.log(res);
+//         bannerList.value=res.result
+// }
 
-const bannerList=ref([]) 
-
-const getBanner=async ()=>{
-    const res=await getBannerAPI({
-        distributionSite : '2' })
-    console.log(res);
-    bannerList.value=res.result
-}
-
-onMounted(()=>{
-    getBanner()
-})
+// onMounted(()=>{
+//     getBanner()
+// })
 
 
 

@@ -3,11 +3,25 @@
 
 import httpInstance from "@/utils/http";
 
-export function getBannerAPI(){
-    return httpInstance({   
-        url:"/home/banner"
-    })
+// export function getBannerAPI(){
+//     return httpInstance({   
+//         url:"/home/banner"
+//     })
+// }
+
+
+//分类轮播图和首页轮播图的区别只有一个，接口参数不同，其余逻辑一致
+export function getBannerAPI (params = {}) {
+  // 默认为1 商品为2
+  const { distributionSite = '1' } = params
+  return httpInstance({
+    url: '/home/banner',
+    params: {
+      distributionSite
+    }
+  })
 }
+
 
 /**
  * @description: 获取新鲜好物

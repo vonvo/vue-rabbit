@@ -1,5 +1,5 @@
 <script setup>
-import { getHotAPI } from '@/apis/Home';
+import { getHotAPI } from '@/apis/home';
 import { onMounted, ref } from 'vue';
 import HomePanel from '@/views/Home/components/HomePanel.vue'
 const hotList=ref([])

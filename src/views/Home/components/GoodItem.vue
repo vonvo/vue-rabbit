@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import HomePanel from './HomePanel.vue'
-import { getGoodsAPI } from '@/apis/Home';
+import { getGoodsAPI } from '@/apis/home';
 
 //GoodItem属于纯展示类组件，封装思路：抽象Props参数，传入什么就显示什么
 

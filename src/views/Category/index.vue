@@ -1,7 +1,7 @@
 <script setup>
 import {getTopCategoryAPI} from "@/apis/Category"
 import { onMounted,ref } from "vue";
-import { useRoute } from "vue-router";
+import { onBeforeRouteUpdate, useRoute } from "vue-router";
 
 import GoodItem from "../Home/components/GoodItem.vue";
 
@@ -17,13 +17,36 @@ const route = useRoute()
 //     categoryData.value = res.result
 // }
 
-const getCategory = async () => {
+// const getCategory = async () => {
+// // 如何在setup中获取路由参数 useRoute() -> route 等价于this.$route
+//     const res = await getTopCategoryAPI(route.params.id)
+//     console.log(res);
+    
+//     categoryData.value = res.result
+// }
+
+//把上面的函数加个传参
+const getCategory = async (id=route.params.id) => {
 // 如何在setup中获取路由参数 useRoute() -> route 等价于this.$route
-    const res = await getTopCategoryAPI(route.params.id)
+    const res = await getTopCategoryAPI(id)
     console.log(res);
     
     categoryData.value = res.result
 }
+
+
+
+//目标：路由参数变化的时候，可以把分类数据接口重新发送
+
+onBeforeRouteUpdate((to)=>{
+//存在问题：使用最新的路由参数，请求最新的分类数据
+    console.log(to);
+    getCategory(to.params.id)
+})
+
+
+
+
 
 onMounted(()=>{
     getCategory()

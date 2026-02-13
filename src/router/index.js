@@ -7,7 +7,7 @@ import Login from "@/views/Login/index.vue"
 import Layout from "@/views/Layout/index.vue"
 import Home from "@/views/Home/index.vue"
 import Category from "@/views/Category/index.vue"
-
+import SubCategory from '@/views/SubCategory/index.vue'
 
 
 //使用路由懒加载，（异步加载），用到的时候才加载
@@ -28,7 +28,12 @@ const router = createRouter({
         {
           path:"/category/:id",
           component:Category,
-        }
+        },
+        {
+          path: 'category/sub/:id',
+          name: 'subCategory',
+          component: SubCategory
+        },
       ]
 
     },

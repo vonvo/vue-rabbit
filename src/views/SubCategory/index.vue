@@ -4,7 +4,7 @@ import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import GoodItem from '@/views/Home/components/GoodItem.vue';
 import { getSubCategoryAPI } from "@/apis/category";
-
+import { nextTick } from 'vue'
 
 //获取面包屑导航数据
 const route=useRoute()
@@ -51,6 +51,45 @@ const tabChange = () => {
   getgoodList()
 }
 
+// # 无限加载实现
+// > 基础思路
+// > 1. 触底条件满足之后 page++，拉取下一页数据
+// > 2. 新老数据做数组拼接
+// > 3. 判断是否已经全部加载完毕，停止监听
+
+// 加载更多
+const  finished = ref(false)
+//为true时，不做请求
+const loadMore = async () => {
+    if (finished.value ) {
+    console.log('已停止加载')
+    return  // 直接返回，不执行加载
+  }
+  
+  const res = await getSubCategoryAPI(gooddata.value) 
+  console.log('加载更多数据咯')
+  // 获取下一页的数据
+  gooddata.value.page++
+//   const res = await getSubCategoryAPI(gooddata.value)
+  goodList.value = [...goodList.value, ...res.result.items]
+  
+  if (res.result.items.length === 0) {
+    console.log('已停止加载')
+    finished.value=true
+    // return  // 直接返回，不执行加载
+  }
+
+
+
+//   nextTick(() => {
+//     const wrap = document.querySelector('.el-scrollbar__wrap')
+//     if (wrap) {
+//       wrap.scrollTop = wrap.scrollTop - 1
+//     }
+//   })
+  // 加载完毕 停止监听
+
+}
 
 
 </script>
@@ -71,11 +110,12 @@ const tabChange = () => {
         <el-tab-pane label="最高人气" name="orderNum"></el-tab-pane>
         <el-tab-pane label="评论最多" name="evaluateNum"></el-tab-pane>
       </el-tabs>
-      <div class="body">
-         <!-- 商品列表-->
-        <GoodItem  v-for="good in goodList" :good="good"  :key="good.id"/>
-
-      </div>
+      <el-scrollbar height="400px" @end-reached="loadMore">
+        <div class="body" >
+            <!-- 商品列表-->
+            <GoodItem  v-for="good in goodList" :good="good"  :key="good.id"/>
+        </div>
+      </el-scrollbar>
     </div>
   </div>
 

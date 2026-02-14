@@ -42,9 +42,14 @@ onMounted(()=>{
     getgoodList()
 })
 
+// # 列表筛选实现
+// > 思路：tab组件切换时修改reqData中的sortField字段，重新拉取接口列表
 
-
-
+const tabChange = () => {
+  console.log('tab切换了', gooddata.value.sortField)
+  gooddata.value.page = 1
+  getgoodList()
+}
 
 
 
@@ -61,7 +66,7 @@ onMounted(()=>{
       </el-breadcrumb>
     </div>
     <div class="sub-container">
-      <el-tabs>
+      <el-tabs v-model="gooddata.sortField" @tab-change="tabChange">
         <el-tab-pane label="最新商品" name="publishTime"></el-tab-pane>
         <el-tab-pane label="最高人气" name="orderNum"></el-tab-pane>
         <el-tab-pane label="评论最多" name="evaluateNum"></el-tab-pane>

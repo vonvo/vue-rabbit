@@ -42,6 +42,14 @@ const router = createRouter({
       component:Login
     }
   ],
+  //定制路由行为可以解决什么问题
+//在不同路由切换的时候，可以自动滚动到页面的顶部，而不是停留在原先的位置
+//如何配置：vue-router支持scrollBehavior配置项，可以指定路由切换时的滚动位置
+  scrollBehavior(){
+    return{
+      top:0
+    }
+  }
 })
 
 export default router

@@ -7,8 +7,7 @@ import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { getDetail } from '@/apis/details';
 
-import Sku from '@/components/XtxSku/index.vue'
-import ImageView from '@/components/ImageView/index.vue'
+
 import DetailHot from './components/DetailHot.vue';
 import { skeletonItemProps } from 'element-plus';
 

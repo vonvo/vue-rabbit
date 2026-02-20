@@ -1,8 +1,26 @@
 <script setup>
+//封装复杂交互组件的通用思路
+//功能拆解，寻找核心实现思路，寻找关键技术，逐个实现，逐个验证，最后优化
+
+//图片预览组件的封装逻辑
+//1.小图切换大图显示2.放大镜实现
+//2.获取鼠标相对位移，操作滑块left，top
+//3.useMouseInElement
+//4.验证优化
 
 //放大镜效果实现，滑块移动
 import { useMouseInElement } from '@vueuse/core'
 import { ref, watch } from 'vue'
+
+// 图片列表
+const props=defineProps({
+  imageList:{
+    type:Array,
+    default:()=>[]
+  }
+
+})
+
 
 
 // 1.小图切换大图显示
@@ -49,13 +67,13 @@ watch([elementX, elementY, isOutside], () => {
 })
 
 // 图片列表
-const imageList = [
-  "https://yanxuan-item.nosdn.127.net/d917c92e663c5ed0bb577c7ded73e4ec.png",
-  "https://yanxuan-item.nosdn.127.net/e801b9572f0b0c02a52952b01adab967.jpg",
-  "https://yanxuan-item.nosdn.127.net/b52c447ad472d51adbdde1a83f550ac2.jpg",
-  "https://yanxuan-item.nosdn.127.net/f93243224dc37674dfca5874fe089c60.jpg",
-  "https://yanxuan-item.nosdn.127.net/f881cfe7de9a576aaeea6ee0d1d24823.jpg"
-]
+// const imageList = [
+//   "https://yanxuan-item.nosdn.127.net/d917c92e663c5ed0bb577c7ded73e4ec.png",
+//   "https://yanxuan-item.nosdn.127.net/e801b9572f0b0c02a52952b01adab967.jpg",
+//   "https://yanxuan-item.nosdn.127.net/b52c447ad472d51adbdde1a83f550ac2.jpg",
+//   "https://yanxuan-item.nosdn.127.net/f93243224dc37674dfca5874fe089c60.jpg",
+//   "https://yanxuan-item.nosdn.127.net/f881cfe7de9a576aaeea6ee0d1d24823.jpg"
+// ]
 
 </script>
 

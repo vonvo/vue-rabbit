@@ -7,8 +7,10 @@ import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { getDetail } from '@/apis/details';
 
+import Sku from '@/components/XtxSku/index.vue'
 import ImageView from '@/components/ImageView/index.vue'
 import DetailHot from './components/DetailHot.vue';
+import { skeletonItemProps } from 'element-plus';
 
 const detailList=ref({})
 const route=useRoute()
@@ -23,6 +25,10 @@ onMounted(()=>{
   getdetailList()
 })
 
+//sku规格被操作时
+const skuChange=(sku)=>{
+  console.log(sku)
+}
 
 </script>
 
@@ -101,6 +107,7 @@ onMounted(()=>{
                 </dl>
               </div>
               <!-- sku组件 -->
+              <Sku :goods="detailList"  @change="skuChange"/>
 
               <!-- 数据组件 -->
 

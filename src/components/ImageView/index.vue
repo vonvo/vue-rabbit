@@ -42,6 +42,9 @@ watch([elementX, elementY, isOutside], () => {
   if (elementY.value > 300) { top.value = 200 }
   if (elementY.value < 100) { top.value = 0 }
 
+  // 控制大图的显示
+  positionX.value = -left.value * 2
+  positionY.value = -top.value * 2
 
 })
 
@@ -77,11 +80,11 @@ const imageList = [
     <!-- 放大镜大图 -->
     <div class="large" :style="[
       {
-        backgroundImage: `url(${imageList[0]})`,
-        backgroundPositionX: `0px`,
-        backgroundPositionY: `0px`,
+        backgroundImage: `url(${imageList[activeIndex]})`,
+        backgroundPositionX: `${positionX}px`,
+        backgroundPositionY: `${positionY}px`,
       },
-    ]" v-show="false"></div>
+    ]" v-show="!isOutside"></div>
   </div>
 </template>
 

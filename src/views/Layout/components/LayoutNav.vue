@@ -1,6 +1,19 @@
 <script setup>
 import {useUserStore} from "@/stores/user"
+import { useRouter } from 'vue-router'
 const userStore=useUserStore()
+const router = useRouter()
+const confirm = () => {
+  console.log('用户要退出登录了')
+  // 退出登录业务逻辑实现
+  // 1.清除用户信息 触发action
+  userStore.clearUserInfo()
+  // 2.跳转到登录页
+  router.push('/login')
+}
+
+
+
 </script>
 
 <template>
@@ -12,7 +25,11 @@ const userStore=useUserStore()
         <template v-if="userStore.userInfo?.token">
           <li><a href="javascript:;"><i class="iconfont icon-user"></i>{{ userStore.userInfo?.account }}</a></li>
           <li>
-            <el-popconfirm title="确认退出吗?" confirm-button-text="确认" cancel-button-text="取消">
+            <!-- 点击退出登录弹确认框，点击确定按钮实现退出登录逻辑，登录逻辑包括:1.清除当前用户信息2.跳转到登录页面 -->
+            <!-- > 基础思想：
+            > 1. 清除用户信息
+            > 2. 跳转到登录页 -->
+            <el-popconfirm title="确认退出吗?" @confirm="confirm" confirm-button-text="确认" cancel-button-text="取消">
               <template #reference>
                 <a href="javascript:;">退出登录</a>
               </template>

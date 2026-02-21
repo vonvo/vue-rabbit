@@ -12,7 +12,7 @@ import { ElMessage } from 'element-plus'
 import 'element-plus/theme-chalk/el-message.css'
 import { ref } from 'vue'
 import {loginAPI}  from "@/apis/user"
-
+import {useUserStore} from "@/stores/user"
 //1.准备表单数据对象
 const form = ref({
   account: '',
@@ -48,6 +48,7 @@ const rules = {
   
 }
 //3.获取form示例做统一校验
+const userStore=useUserStore()
 const router=useRouter()
 const formRef=ref(null)
 const doLogin=()=>{
@@ -59,8 +60,10 @@ const doLogin=()=>{
         //以valid作为判断条件 如果通过校验才执行登录逻辑
         if(valid){
             //TODO LOGIN
-            const res=await loginAPI({account,password})
-            console.log(res)
+            // const res=await loginAPI({account,password})
+
+            await userStore.getUserInfo({ account, password })
+            // console.log(res)
             // （提示用户，
             ElMessage({ type: 'success', message: '登录成功' })
             // 跳转首页）

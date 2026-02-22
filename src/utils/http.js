@@ -1,7 +1,9 @@
 // axio基础的封装
 import { ElMessage } from 'element-plus'
+import 'element-plus/theme-chalk/el-message.css'
 import axios from "axios"
 import {useUserStore} from "@/stores/user"
+import router from '@/router'
 
 const httpInstance=axios.create({
     baseURL:"http://pcapi-xiaotuxian-front-devtest.itheima.net",
@@ -28,16 +30,37 @@ httpInstance.interceptors.request.use(config=>{
     return config
 },e=>Promise.reject(e))
 
+
 //axios响应式拦截器
+//Token的有效性可以保持一定时间，如果用户一段时间不做任何操作，Token就会失效，使用失效的Token再去请求一些接口，接口就会报401状态码错误，需要我们做额外处理
+//俩个需要思考的问题
+// 1.我们能确定用户到底是在访问哪个接口时出现的401错误吗?在什么位置去拦截这个401?
+// 2.检测到401之后又该干什么呢?
+// 解决方案-在axios响应拦截器做统一处理
+// 失败回调中拦截401
+// 1.清除掉过期的用户信息2.跳转到登录页
+
 httpInstance.interceptors.response.use(res=>res.data,e=>{
+    const userStore = useUserStore()
+    // console.log('完整错误对象:', e);
+    // console.log('e.response:', e.response);
+    // console.log('e.request:', e.request);
+    // console.log('e.message:', e.message);
     // return config
     //统一错误提示
-    console.log(e.response.data,"错误出现");
-    
+    // console.log(e.response.data,"错误出现");
     ElMessage({ 
         type: 'warning', 
-        message: e.response.data.message
+        message: e.response.data?.message
     })
+    //401token失效处理
+    //1.清除本地用户数据
+    //2.跳转到登录页
+    if(e.response.status===401){
+        userStore.clearUserInfo()
+        router.push("/login")
+    }
+
     return Promise.reject(e)
 })
 // },e=>Promise.reject(e))

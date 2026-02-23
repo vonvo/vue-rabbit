@@ -6,11 +6,15 @@
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { getDetail } from '@/apis/details';
+import {useCartStore} from "@/stores/cartStore"
 
+import { ElMessage } from 'element-plus'
+import 'element-plus/theme-chalk/el-message.css'
 
 import DetailHot from './components/DetailHot.vue';
 import { skeletonItemProps } from 'element-plus';
-
+// import { el } from 'element-plus/es/locale';
+const cartStore=useCartStore()
 const detailList=ref({})
 const route=useRoute()
 const getdetailList=async()=>{
@@ -25,8 +29,39 @@ onMounted(()=>{
 })
 
 //sku规格被操作时
+let skuObj={}
 const skuChange=(sku)=>{
   console.log(sku)
+  skuObj=sku
+}
+
+const count=ref(1)
+
+// 添加购物车
+const addCart=()=>{
+  if(skuObj.skuId){
+    //规则已选择 触发action，传商品对象
+    cartStore.addCart({
+      id:detailList.value.id,//商品id
+      name:detailList.value.name,//商品名称
+      picture: detailList.value.mainPictures[0], // 图片
+      price:detailList.value.price,//最新价格
+      count:count.value,// 商品数量
+      skuId: skuObj.skuId, // skuId
+      attrsText:skuObj.specsText,// 商品规格文本
+      selected:true,//商品是否选中
+    })
+    
+  }else{
+    //规格没选择 提示用户
+    ElMessage.warning('请先选择商品规格')
+  }
+
+}
+
+
+const countChange=(count)=>{
+  console.log(count)
 }
 
 </script>
@@ -109,10 +144,11 @@ const skuChange=(sku)=>{
               <Sku :goods="detailList"  @change="skuChange"/>
 
               <!-- 数据组件 -->
-
+              <!-- <el-input-number v-model="num" :min="1" :max="10" @change="handleChange" /> -->
+               <el-input-number v-model="count" :min="1" :max="10" @change="countChange" />
               <!-- 按钮组件 -->
               <div>
-                <el-button size="large" class="btn">
+                <el-button size="large" class="btn" @click="addCart">
                   加入购物车
                 </el-button>
               </div>

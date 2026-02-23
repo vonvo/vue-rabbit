@@ -3,6 +3,10 @@ import {useCartStore} from "@/stores/cartStore"
 
 const cartStore=useCartStore()
 
+const del=(skuId)=>{
+  console.log('删除')
+  cartStore.delCart(skuId)
+}
 
 </script>
 
@@ -25,10 +29,12 @@ const cartStore=useCartStore()
             </div>
             <div class="right">
               <p class="price">&yen;{{ i.price }}</p>
-              <p class="count">x{{ i.count }}</p>
+              <p class="count" >x{{ i.count }}</p>
             </div>
           </RouterLink>
-          <i class="iconfont icon-close-new" @click="store.delCart(i.skuId)"></i>
+          <!-- <i class="iconfont icon-close-new" @click="cartStore.delCart(i.skuId)"></i> -->
+          <i class="iconfont icon-close-new" @click="del(i.skuId)"></i>
+          
         </div>
        
       </div>

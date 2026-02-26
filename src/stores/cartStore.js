@@ -47,6 +47,15 @@ export const useCartStore = defineStore('cart', () => {
   item.selected = selected
   }
 
+  // 全选功能action
+  const allCheck = (selected) => {
+  // 把cartList中的每一项的selected都设置为当前的全选框状态
+  cartList.value.forEach(item => item.selected = selected)
+}
+
+  // 是否全选计算属性
+  const isAll = computed(() => cartList.value.every((item) => item.selected))
+
   //计算属性
   //1.总的数量 所有项的count之和
   const allCount = computed(() => {
@@ -63,6 +72,8 @@ export const useCartStore = defineStore('cart', () => {
     addCart,
     delCart,
     singleCheck,
+    allCheck,
+    isAll,
     allCount,
     allPrice
   }

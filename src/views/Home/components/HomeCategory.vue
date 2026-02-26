@@ -1,6 +1,6 @@
 <script setup>
 
-import { useCategoryStore } from "@/stores/category"
+import { useCategoryStore } from "@/stores/categoryStore"
 
 //触发获取导航数据列表的action
 const categoryStore=useCategoryStore()

@@ -2,7 +2,7 @@
 import { useScroll } from '@vueuse/core'
 import {getCategoryAPI} from  "@/apis/Layout"
 import { onMounted, ref } from "vue";
-import { useCategoryStore } from "@/stores/category"
+import { useCategoryStore } from "@/stores/categoryStore"
 const { y } = useScroll(window)
 
 //使用pinia的数据

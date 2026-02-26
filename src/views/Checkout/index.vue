@@ -2,9 +2,14 @@
  
 
 <script setup>
+// import router from "@/router";
+import { useRouter } from "vue-router";
 import {getCheckoutInfoAPI} from "@/apis/checkout"
+import { createOrderAPI } from '@/apis/checkout'
 import { onMounted, ref } from "vue";
-
+import { useCartStore } from "@/stores/cartStore";
+const cartStore=useCartStore()
+const router=useRouter()
 const checkInfo = ref({})  // 订单对象
 
 const curAddress = ref({})  // 地址对象
@@ -30,6 +35,35 @@ const switchAddress=(item)=>{
 const confirm=()=>{
     curAddress.value=activeAddress.value
     showDialog.value=false
+}
+
+
+// 创建订单
+// 确定结算信息没有问题之后，点击提交订单按钮，需要做以下俩个事情:
+// 1.调用接口生成订单id，并且携带id跳转到支付页
+// 2.调用更新购物车列表接口，更新购物车状态
+const createOrder = async () => {
+  const res = await createOrderAPI({
+    deliveryTimeType: 1,
+    payType: 1,
+    payChannel: 1,
+    buyerMessage: '',
+    goods: checkInfo.value.goods.map(item => {
+      return {
+        skuId: item.skuId,
+        count: item.count
+      }
+    }),
+    addressId: curAddress.value.id
+  })
+  const orderId = res.result.id
+  router.push({
+    path: '/pay',
+    query: {
+      id: orderId
+    }
+  })
+  cartStore.updateNewList()
 }
 
 onMounted(()=>{
@@ -129,7 +163,7 @@ onMounted(()=>{
         </div>
         <!-- 提交订单 -->
         <div class="submit">
-          <el-button type="primary" size="large" >提交订单</el-button>
+          <el-button type="primary" @click="createOrder" size="large" >提交订单</el-button>
         </div>
       </div>
     </div>

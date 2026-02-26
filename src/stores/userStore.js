@@ -5,8 +5,10 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { loginAPI } from '@/apis/user'
-
+import { mergeCartAPI } from '@/apis/cart'
 import {useCartStore} from "@/stores/cartStore"
+
+import { countdownEmits } from 'element-plus'
 
 export const useUserStore = defineStore('user', () => {
 
@@ -17,6 +19,16 @@ export const useUserStore = defineStore('user', () => {
   const getUserInfo = async ({ account, password }) => {
     const res = await loginAPI({ account, password })
     userInfo.value = res.result
+    //在用户登录时，把本地的购物车数据和服务端购物车数据进行合并操作
+    await mergeCartAPI(cartStore.cartList.map(item=>{
+      return {
+        skuId:item.skuId,
+        selected:item.selected,
+        count:item.count
+      }
+    }))
+    cartStore.updateNewList()
+
   }
 
 //退出时清除用户信息

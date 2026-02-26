@@ -10,6 +10,7 @@ import Category from "@/views/Category/index.vue"
 import SubCategory from '@/views/SubCategory/index.vue'
 import Detail from "@/views/Detail/index.vue"
 import CartList from '@/views/CartList/index.vue'
+import Checkout from '@/views/Checkout/index.vue'
 
 //使用路由懒加载，（异步加载），用到的时候才加载
 
@@ -42,6 +43,10 @@ const router = createRouter({
         {
           path: '/cartlist',
           component: CartList
+        },
+        {
+          path: '/checkout',
+          component: Checkout
         }
       ]
 

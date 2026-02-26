@@ -20,6 +20,17 @@ const getCheckInfo=async ()=>{
 //控制弹框打开
 const showDialog=ref(false)
  
+const activeAddress = ref({})  // 激活地址对象
+// const activeIndex =checkInfo.value.userAddresses.findIndex(item=>item.isDefault===0)
+
+const switchAddress=(item)=>{
+    activeAddress.value=item
+}
+
+const confirm=()=>{
+    curAddress.value=activeAddress.value
+    showDialog.value=false
+}
 
 onMounted(()=>{
     getCheckInfo()
@@ -132,9 +143,16 @@ onMounted(()=>{
     点击按钮控制响应式数据
     渲染可选地址列表
     2.切换地址交互:点击切换地址，点击确定按钮，激活地址替换默认收货地址 -->
+    <!-- 原理:地址切换是我们经常遇到的‘tab切换类 需求，这类需求的实现逻辑都是相似的
+    1.点击时记录一个当前激活地址对象activeAddress，点击哪个地址就把哪个地址对象记录下来
+    2.通过动态类名:class控制激活样式类型active是否存在，判断条件为:激活地址对象的id ===当前项id -->
+
+    <!-- 切换地址属于哪类通用型交互功能
+    tab切换类交互
+    记录激活项(整个对象/id/index)+动态类型控制 -->
          <el-dialog title="切换收货地址" width="30%" v-model="showDialog"  center>
             <div class="addressWrapper">
-                <div class="text item" v-for="item in checkInfo.userAddresses"  :key="item.id">
+                <div @click="switchAddress(item)" :class="{active: activeAddress.id===item.id}" class="text item" v-for="item in checkInfo.userAddresses"  :key="item.id">
                 <ul>
                 <li><span>收<i />货<i />人：</span>{{ item.receiver }} </li>
                 <li><span>联系方式：</span>{{ item.contact }}</li>
@@ -145,7 +163,7 @@ onMounted(()=>{
             <template #footer>
                 <span class="dialog-footer">
                 <el-button>取消</el-button>
-                <el-button type="primary">确定</el-button>
+                <el-button type="primary" @click="confirm">确定</el-button>
                 </span>
             </template>
         </el-dialog>

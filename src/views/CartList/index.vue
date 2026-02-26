@@ -1,7 +1,23 @@
 <script setup>
 import {useCartStore} from "@/stores/cartStore"
 
+
 const cartStore=useCartStore()
+
+// 列表购物车-单选功能
+// 核心思路:单选的核心思路就是始终把单选框的状态和Pinia中store对应的状态保持同步
+// 注意事项:V-model双向绑定指令不方便进行命令式的操作(因为后续还需要调用接口)，所以把v-model回退到一般模式
+// ，也就是:model-value和@change的配合实现
+
+// 单选回调
+const singleCheck = (i, selected) => {
+  console.log(i, selected)
+  // store cartList 数组 无法知道要修改谁的选中状态？
+  // 除了selected补充一个用来筛选的参数 - skuId
+  cartStore.singleCheck(i.skuId, selected)
+}
+
+
 
 </script>
 
@@ -26,7 +42,8 @@ const cartStore=useCartStore()
           <tbody>
             <tr v-for="i in cartStore.cartList" :key="i.id">
               <td>
-                <el-checkbox />
+                <!-- 单选框 -->
+                <el-checkbox :model-value="i.selected" @change="(selected) => singleCheck(i, selected)" />
               </td>
               <td>
                 <div class="goods">

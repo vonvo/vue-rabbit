@@ -51,12 +51,12 @@ httpInstance.interceptors.response.use(res=>res.data,e=>{
     // console.log(e.response.data,"错误出现");
     ElMessage({ 
         type: 'warning', 
-        message: e.response.data?.message
+        message: e.response?.data?.message
     })
     //401token失效处理
     //1.清除本地用户数据
     //2.跳转到登录页
-    if(e.response.status===401){
+    if(e.response?.status===401){
         userStore.clearUserInfo()
         router.push("/login")
     }

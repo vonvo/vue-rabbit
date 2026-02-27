@@ -13,13 +13,18 @@ import CartList from '@/views/CartList/index.vue'
 import Checkout from '@/views/Checkout/index.vue'
 import Pay from '@/views/Pay/index.vue'
 import PayBack from '@/views/Pay/PayBack.vue'
-
+import Member from '@/views/Member/index.vue'
+import MemberInfo from '@/views/Member/components/UserInfo.vue'
+import MemberOrder from '@/views/Member/components/UserOrder.vue'
 //使用路由懒加载，（异步加载），用到的时候才加载
 
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   //下面配置path， component对应关系的位置，里面是一个一个对象(每一层的路由，都有路由出口)
+  //在 children 数组中，子路由的 path 前面加不加 / 有本质区别，
+  //path: 'category'	相对路径
+  //path: '/category'	绝对路径
   routes: [
     {
       path:"/",
@@ -30,7 +35,7 @@ const router = createRouter({
           component:Home,
         },
         {
-          path:"/category/:id",
+          path:"category/:id",
           component:Category,
         },
         {
@@ -43,20 +48,34 @@ const router = createRouter({
           component: Detail
         },
         {
-          path: '/cartlist',
+          path: 'cartlist',
           component: CartList
         },
         {
-          path: '/checkout',
+          path: 'checkout',
           component: Checkout
         },
         {
-          path: '/pay',
+          path: 'pay',
           component: Pay
         },
         {
           path: 'paycallback', // 注意路径，必须是paycallback
           component: PayBack
+        },
+        {
+          path: 'member',
+          component: Member,
+          children:[
+            {
+              path: 'user',
+              component: MemberInfo
+            },
+            {
+              path: 'order',
+              component: MemberOrder
+            }
+          ]
         }
       ]
 

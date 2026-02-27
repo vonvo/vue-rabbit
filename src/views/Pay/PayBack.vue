@@ -1,5 +1,16 @@
 <script setup>
+import { getOrderAPI } from '@/apis/pay'
+import { onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
+const route = useRoute()
+const orderInfo = ref({})
 
+const getOrderInfo = async () => {
+  const res = await getOrderAPI(route.query.orderId)
+  orderInfo.value = res.result
+}
+
+onMounted(() => getOrderInfo())
 </script>
 
 
@@ -7,13 +18,14 @@
   <div class="xtx-pay-page">
     <div class="container">
       <!-- 支付结果 -->
+       <!-- 路由参数获取到的是字符串而不是布尔值 -->
       <div class="pay-result">
-        <span class="iconfont icon-queren2 green"></span>
-        <span class="iconfont icon-shanchu red"></span>
-        <p class="tit">支付成功</p>
+        <span class="iconfont icon-queren2 green"  v-if="$route.query.payResult === 'true'"></span>
+        <span class="iconfont icon-shanchu red" v-else></span>
+        <p class="tit">支付{{ $route.query.payResult === 'true' ? '成功' : '失败' }}</p>
         <p class="tip">我们将尽快为您发货，收货期间请保持手机畅通</p>
         <p>支付方式：<span>支付宝</span></p>
-        <p>支付金额：<span>¥200.00</span></p>
+        <p>支付金额：<span>¥{{ orderInfo.payMoney?.toFixed(2) }}</span></p>
         <div class="btn">
           <el-button type="primary" style="margin-right:20px">查看订单</el-button>
           <el-button>进入首页</el-button>
